@@ -1330,8 +1330,7 @@ func (k *KubernetesConfig) IsUsingNetworkPluginMode(mode string) bool {
 	return strings.EqualFold(k.NetworkPluginMode, mode)
 }
 
-// GetOrderedKubeletConfigStringForPowershell returns an ordered string of key/val pairs for Powershell script consumption
-func (config *NodeBootstrappingConfiguration) GetOrderedKubeletConfigStringForPowershell(customKc *CustomKubeletConfig) string {
+func (config *NodeBootstrappingConfiguration) GetKubeConfig(customKc *CustomKubeletConfig) map[string]string {
 	kubeletConfig := config.KubeletConfig
 	if kubeletConfig == nil {
 		kubeletConfig = map[string]string{}
@@ -1363,7 +1362,12 @@ func (config *NodeBootstrappingConfiguration) GetOrderedKubeletConfigStringForPo
 			kubeletConfig["--container-log-max-files"] = fmt.Sprintf("%d", *customKc.ContainerLogMaxFiles)
 		}
 	}
+	return kubeletConfig
+}
 
+// GetOrderedKubeletConfigStringForPowershell returns an ordered string of key/val pairs for Powershell script consumption
+func (config *NodeBootstrappingConfiguration) GetOrderedKubeletConfigStringForPowershell(customKc *CustomKubeletConfig) string {
+	kubeletConfig := config.GetKubeConfig(customKc)
 	if len(kubeletConfig) == 0 {
 		return ""
 	}
