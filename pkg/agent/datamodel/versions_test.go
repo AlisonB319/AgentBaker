@@ -204,48 +204,16 @@ func TestGetVersionsLt(t *testing.T) {
 	}
 }
 
-func TestGetVersionsBetween(t *testing.T) {
-	versions := []string{"1.1.0", "1.2.0", "1.2.1"}
-	expected := []string{"1.2.0"}
+func TestGetVersionsBetweenBetaAndAlpha(t *testing.T) {
+	versions := []string{"1.9.6", "1.10.0-beta.2", "1.10.0-beta.4", "1.10.0-rc.1"}
+	expected := []string{"1.10.0-beta.2", "1.10.0-beta.4", "1.10.0-rc.1"}
 	expectedMap := map[string]bool{
-		"1.2.0": true,
-	}
-	v := GetVersionsBetween(versions, "1.1.0", "1.2.1", false, false)
-	errStr := "GetVersionsBetween returned an unexpected list of strings"
-	if len(v) != len(expected) {
-		t.Errorf(errStr)
-	}
-	for _, ver := range v {
-		if !expectedMap[ver] {
-			t.Errorf(errStr)
-		}
-	}
-
-	versions = []string{"1.1.0", "1.2.0", "1.2.1"}
-	expected = []string{"1.1.0", "1.2.0", "1.2.1"}
-	expectedMap = map[string]bool{
-		"1.1.0": true,
-		"1.2.0": true,
-		"1.2.1": true,
-	}
-	v = GetVersionsBetween(versions, "1.1.0", "1.2.1", true, false)
-	if len(v) != len(expected) {
-		t.Errorf(errStr)
-	}
-	for _, ver := range v {
-		if !expectedMap[ver] {
-			t.Errorf(errStr)
-		}
-	}
-
-	versions = []string{"1.9.6", "1.10.0-beta.2", "1.10.0-beta.4", "1.10.0-rc.1"}
-	expected = []string{"1.10.0-beta.2", "1.10.0-beta.4", "1.10.0-rc.1"}
-	expectedMap = map[string]bool{
 		"1.10.0-beta.2": true,
 		"1.10.0-beta.4": true,
 		"1.10.0-rc.1":   true,
 	}
-	v = GetVersionsBetween(versions, "1.9.6", "1.11.0", false, true)
+	v := GetVersionsBetween(versions, "1.9.6", "1.11.0", false, true)
+	errStr := "GetVersionsBetween returned an unexpected list of strings"
 	if len(v) != len(expected) {
 		t.Errorf(errStr)
 	}
@@ -298,23 +266,6 @@ func TestGetVersionsBetween(t *testing.T) {
 		}
 	}
 
-	versions = []string{"1.9.6", "1.10.0", "1.10.1", "1.10.2"}
-	expected = []string{"1.10.0", "1.10.1", "1.10.2"}
-	expectedMap = map[string]bool{
-		"1.10.0": true,
-		"1.10.1": true,
-		"1.10.2": true,
-	}
-	v = GetVersionsBetween(versions, "1.10.0-rc.1", "1.12.0", false, true)
-	if len(v) != len(expected) {
-		t.Errorf(errStr)
-	}
-	for _, ver := range v {
-		if !expectedMap[ver] {
-			t.Errorf(errStr)
-		}
-	}
-
 	versions = []string{"1.11.0-alpha.1", "1.11.0-alpha.2", "1.11.0-beta.1"}
 	expected = []string{"1.11.0-alpha.2"}
 	expectedMap = map[string]bool{
@@ -334,6 +285,58 @@ func TestGetVersionsBetween(t *testing.T) {
 	expected = []string{}
 	expectedMap = map[string]bool{}
 	v = GetVersionsBetween(versions, "1.11.0-beta.1", "1.12.0", false, true)
+	if len(v) != len(expected) {
+		t.Errorf(errStr)
+	}
+	for _, ver := range v {
+		if !expectedMap[ver] {
+			t.Errorf(errStr)
+		}
+	}
+}
+
+func TestGetVersionsBetween(t *testing.T) {
+	versions := []string{"1.1.0", "1.2.0", "1.2.1"}
+	expected := []string{"1.2.0"}
+	expectedMap := map[string]bool{
+		"1.2.0": true,
+	}
+	v := GetVersionsBetween(versions, "1.1.0", "1.2.1", false, false)
+	errStr := "GetVersionsBetween returned an unexpected list of strings"
+	if len(v) != len(expected) {
+		t.Errorf(errStr)
+	}
+	for _, ver := range v {
+		if !expectedMap[ver] {
+			t.Errorf(errStr)
+		}
+	}
+
+	versions = []string{"1.1.0", "1.2.0", "1.2.1"}
+	expected = []string{"1.1.0", "1.2.0", "1.2.1"}
+	expectedMap = map[string]bool{
+		"1.1.0": true,
+		"1.2.0": true,
+		"1.2.1": true,
+	}
+	v = GetVersionsBetween(versions, "1.1.0", "1.2.1", true, false)
+	if len(v) != len(expected) {
+		t.Errorf(errStr)
+	}
+	for _, ver := range v {
+		if !expectedMap[ver] {
+			t.Errorf(errStr)
+		}
+	}
+
+	versions = []string{"1.9.6", "1.10.0", "1.10.1", "1.10.2"}
+	expected = []string{"1.10.0", "1.10.1", "1.10.2"}
+	expectedMap = map[string]bool{
+		"1.10.0": true,
+		"1.10.1": true,
+		"1.10.2": true,
+	}
+	v = GetVersionsBetween(versions, "1.10.0-rc.1", "1.12.0", false, true)
 	if len(v) != len(expected) {
 		t.Errorf(errStr)
 	}
