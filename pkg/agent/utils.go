@@ -432,6 +432,7 @@ func GetKubeletConfigFileContent(kc map[string]string, customKc *datamodel.Custo
 	kubeletConfig.KubeReserved = strKeyValToMap(kc["--kube-reserved"], ",", "=")
 
 	// Settings from customKubeletConfig, only take if it's set.
+	//nolint:nestif
 	if customKc != nil {
 		if customKc.CPUManagerPolicy != "" {
 			kubeletConfig.CPUManagerPolicy = customKc.CPUManagerPolicy

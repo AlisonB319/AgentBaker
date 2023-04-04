@@ -462,8 +462,8 @@ type WindowsProfile struct {
 	AlwaysPullWindowsPauseImage    *bool                      `json:"alwaysPullWindowsPauseImage,omitempty"`
 	ContainerdWindowsRuntimes      *ContainerdWindowsRuntimes `json:"containerdWindowsRuntimes,omitempty"`
 	WindowsCalicoPackageURL        string                     `json:"windowsCalicoPackageURL,omitempty"`
-	WindowsSecureTlsEnabled        *bool                      `json:"windowsSecureTlsEnabled,omitempty"`
-	WindowsGmsaPackageUrl          string                     `json:"windowsGmsaPackageUrl,omitempty"`
+	WindowsSecureTLSEnabled        *bool                      `json:"windowsSecureTlsEnabled,omitempty"`
+	WindowsGmsaPackageURL          string                     `json:"windowsGmsaPackageUrl,omitempty"`
 	CseScriptsPackageURL           string                     `json:"cseScriptsPackageURL,omitempty"`
 	HnsRemediatorIntervalInMinutes *uint32                    `json:"hnsRemediatorIntervalInMinutes,omitempty"`
 	LogGeneratorIntervalInMinutes  *uint32                    `json:"logGeneratorIntervalInMinutes,omitempty"`
@@ -1191,10 +1191,10 @@ func (w *WindowsProfile) IsAlwaysPullWindowsPauseImage() bool {
 
 // IsWindowsSecureTlsEnabled returns true if secure TLS should be enabled for Windows nodes.
 func (w *WindowsProfile) IsWindowsSecureTlsEnabled() bool {
-	if w.WindowsSecureTlsEnabled != nil {
-		return *w.WindowsSecureTlsEnabled
+	if w.WindowsSecureTLSEnabled != nil {
+		return *w.WindowsSecureTLSEnabled
 	}
-	return DefaultWindowsSecureTlsEnabled
+	return DefaultWindowsSecureTLSEnabled
 }
 
 // GetHnsRemediatorIntervalInMinutes gets HnsRemediatorIntervalInMinutes specified or returns default value.
