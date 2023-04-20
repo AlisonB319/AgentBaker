@@ -258,7 +258,7 @@ func IsKubernetesVersionGe(actualVersion, version string) bool {
 
 func getCustomDataFromJSON(jsonStr string) string {
 	var customDataObj map[string]string
-	jsonStr = strings.ReplaceAll(jsonStr, "\r", "\r\n")
+	jsonStr = strings.ReplaceAll(jsonStr, "\r", "\n")
 	jsonStr = strings.ReplaceAll(jsonStr, "\n", "\\n")
 	jsonStr = strings.ReplaceAll(jsonStr, "\t", "\\t")
 	err := json.Unmarshal([]byte(jsonStr), &customDataObj)
