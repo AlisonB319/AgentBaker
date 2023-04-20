@@ -172,26 +172,27 @@ func isVHD(profile *datamodel.AgentPoolProfile) string {
 
 func getOutBoundCmd(nbc *datamodel.NodeBootstrappingConfiguration, cloudSpecConfig *datamodel.AzureEnvironmentSpecConfig) string {
 	if nbc.ContainerService == nil {
-		return "nbc.ContainerService is nil"
+		return ""
 	}
 	cs := nbc.ContainerService
 
 	if cs.Properties == nil {
-		return "cs.Properties is nil"
+		return ""
 	}
 	if cs.Properties.FeatureFlags.IsFeatureEnabled("BlockOutboundInternet") {
 		return ""
 	}
 
 	if cloudSpecConfig == nil {
-		return "cloudSpecConfig is nil"
+		return ""
 	}
 	registry := ""
-	if cloudSpecConfig.CloudName == datamodel.AzureChinaCloud {
+	switch {
+	case cloudSpecConfig.CloudName == datamodel.AzureChinaCloud:
 		registry = `gcr.azk8s.cn`
-	} else if cs.IsAKSCustomCloud() {
+	case cs.IsAKSCustomCloud():
 		registry = cs.Properties.CustomCloudEnv.McrURL
-	} else {
+	default:
 		registry = `mcr.microsoft.com`
 	}
 
@@ -203,15 +204,11 @@ func getOutBoundCmd(nbc *datamodel.NodeBootstrappingConfiguration, cloudSpecConf
 	// so we need to use nc for the connectivity check.
 	clusterVersion, err := semver.Make(cs.Properties.OrchestratorProfile.OrchestratorVersion)
 	if err != nil {
-		if err != nil {
-			return err.Error()
-		}
+		return ""
 	}
 	minVersion, err := semver.Make("1.18.0")
 	if err != nil {
-		if err != nil {
-			return err.Error()
-		}
+		return ""
 	}
 
 	connectivityCheckCommand := ""
@@ -241,3 +238,4 @@ func getProxyVariables(nbc *datamodel.NodeBootstrappingConfiguration) string {
 	}
 	return proxyVars
 }
+
